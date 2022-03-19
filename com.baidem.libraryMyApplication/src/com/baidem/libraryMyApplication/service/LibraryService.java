@@ -41,12 +41,15 @@ public class LibraryService {
 
 			if (answer.equals("1")) {
 				printList();
+				enterToContinu();
 			} else if (answer.equals("2")) {
 				addBook();
 			} else if (answer.equals("3")) {
 				loanBook();
 			} else if (answer.equals("4")) {
 				removeBook();
+			} else if (answer.equals("5")) {
+				returnBook();
 			}
 
 		} while (!answer.equals("quit"));
@@ -55,28 +58,75 @@ public class LibraryService {
 
 	}
 
+	public void returnBook() {
+		String answer = null;
+		int index;
+
+		System.out.println("Rendre un livre");
+		System.out.println("----------------");
+		printLoanedList();
+
+		if (loanedQuantity() > 0) {
+			System.out.println("Choisir l'index du livre à rendre :");
+			index = scanner.nextInt();
+			scanner.nextLine();
+			if (index < 0 || index > (this.books.size() - 1)) { // if impossible index
+				System.out.println("*erreur de saisie*");
+			} else {
+				if (!this.books.get(index).getLoaned()) {
+					System.out.println("Livre pas emprunté");
+					answer = "menu";
+				} else {
+					System.out.print("Rendre : ");
+					printBookTitle(index);
+					System.out.println("'oui' pour confirmer");
+					System.out.println("'non' pour annuler");
+					answer = scanner.nextLine();
+					if (answer.equals("oui")) {
+						this.books.get(index).loanBackBook();
+						System.out.println("Livre rendu.");
+					} else {
+						System.out.println("Annulé.");
+					}
+				}
+				
+			}
+			
+		} else {
+			System.out.println("Pas de livres à rendre.");
+			answer = "menu";
+		}
+		enterToContinu();
+	}
+
 	public void removeBook() {
+		String answer = null;
+		int index;
+
 		System.out.println("Effacer un livre");
 		System.out.println("----------------");
 		printList();
 		if (BorrowableQuantity() > 0) {
 			System.out.println("Choisir l'index du livre à supprimer :");
-			int index = scanner.nextInt();
+			index = scanner.nextInt();
 			scanner.nextLine();
-			String answer = null;
-			System.out.print("Supprimer : ");
-			printBookTitle(index);
-			System.out.println("'oui' pour confirmer");
-			System.out.println("'non' pour annuler");
-			answer = scanner.nextLine();
-			if (answer.equals("oui")) {
-				this.books.remove(index);
-				System.out.println("Livre supprimé.");
+			if (index < 0 || index > (this.books.size() - 1)) { // if impossible index
+				System.out.println("*erreur de saisie*");
 			} else {
-				System.out.println("Annulé.");
+				System.out.print("Supprimer : ");
+				printBookTitle(index);
+				System.out.println("'oui' pour confirmer");
+				System.out.println("'non' pour annuler");
+				answer = scanner.nextLine();
+				if (answer.equals("oui")) {
+					this.books.remove(index);
+					System.out.println("Livre supprimé.");
+				} else {
+					System.out.println("Annulé.");
+				}
 			}
-			enterToContinu();
 		}
+		enterToContinu();
 	}
 
 	public void loanBook() {
@@ -92,7 +142,7 @@ public class LibraryService {
 				System.out.println("Choisir l'index du livre :");
 				index = scanner.nextInt();
 				scanner.nextLine();
-				if (index < 0 || index > (this.books.size() - 1)) {
+				if (index < 0 || index > (this.books.size() - 1)) { // if impossible index
 					System.out.println("*erreur de saisie*");
 					answer = "menu";
 				} else {
@@ -150,12 +200,36 @@ public class LibraryService {
 
 	}
 
+	public int loanedQuantity() {
+		int count = 0;
+
+		for (Book book : books) {
+			if (book.getLoaned()) {
+				count++;
+			}
+		}
+		return count;
+
+	}
+
 	public void printBorrowableList() {
 		System.out.println("Livres disponible");
 		int count = 0;
 
 		for (Book book : books) {
 			if (!book.getLoaned()) {
+				System.out.println(count + " - " + book.getTitle());
+			}
+			count++;
+		}
+	}
+
+	public void printLoanedList() {
+		System.out.println("Livre(s) emprunté(s)");
+		int count = 0;
+
+		for (Book book : books) {
+			if (book.getLoaned()) {
 				System.out.println(count + " - " + book.getTitle());
 			}
 			count++;
@@ -190,12 +264,9 @@ public class LibraryService {
 				System.out.println(count + " - " + book.getTitle());
 				count++;
 			}
-			enterToContinu();
 
 		} else {
 			System.out.println("La liste est vide.");
-
-			enterToContinu();
 		}
 
 	}
@@ -213,6 +284,7 @@ public class LibraryService {
 		System.out.println("2. Ajouter un livre");
 		System.out.println("3. Emprunter un livre");
 		System.out.println("4. Supprimer un livre");
+		System.out.println("5. Rendre un livre");
 		System.out.println("'quit' pour quitter");
 		System.out.println("Faire un choix");
 

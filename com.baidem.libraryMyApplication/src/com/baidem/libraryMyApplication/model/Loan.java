@@ -28,6 +28,11 @@ public class Loan {
 	}
 
 
+	public void setLoanEnd() {
+		this.loanEnd = LocalDate.now();
+	}
+
+
 	public String getLoaner() {
 		return loaner;
 	}

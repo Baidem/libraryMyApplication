@@ -25,6 +25,15 @@ public class Book {
 		this.loaned = loaned;
 		this.loans = new LinkedList<Loan>();
 	}
+	
+	public void loanBackBook() {
+		for(Loan loan : this.loans) {
+			if(loan.getLoanEnd() == null) {
+				loan.setLoanEnd();
+			}
+		}
+		this.loaned = false;
+	}
 
 	public void addLoan(Loan loan) {
 		this.loans.add(loan);
