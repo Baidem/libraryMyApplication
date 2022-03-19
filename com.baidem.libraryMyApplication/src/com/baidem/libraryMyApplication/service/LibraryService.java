@@ -45,12 +45,38 @@ public class LibraryService {
 				addBook();
 			} else if (answer.equals("3")) {
 				loanBook();
+			} else if (answer.equals("4")) {
+				removeBook();
 			}
 
 		} while (!answer.equals("quit"));
 
 		scanner.close();
 
+	}
+
+	public void removeBook() {
+		System.out.println("Effacer un livre");
+		System.out.println("----------------");
+		printList();
+		if (BorrowableQuantity() > 0) {
+			System.out.println("Choisir l'index du livre à supprimer :");
+			int index = scanner.nextInt();
+			scanner.nextLine();
+			String answer = null;
+			System.out.print("Supprimer : ");
+			printBookTitle(index);
+			System.out.println("'oui' pour confirmer");
+			System.out.println("'non' pour annuler");
+			answer = scanner.nextLine();
+			if (answer.equals("oui")) {
+				this.books.remove(index);
+				System.out.println("Livre supprimé.");
+			} else {
+				System.out.println("Annulé.");
+			}
+			enterToContinu();
+		}
 	}
 
 	public void loanBook() {
@@ -101,7 +127,7 @@ public class LibraryService {
 	}
 
 	public void confirmLoanMenu(int index) {
-		System.out.print("Vous voulez emprunter : ");
+		System.out.print("Confirmer l'emprunt de : ");
 		printBookTitle(index);
 		System.out.println("'oui' pour confirmer");
 		System.out.println("'menu' pour revenir au MENU ");
@@ -175,7 +201,7 @@ public class LibraryService {
 	}
 
 	public void enterToContinu() {
-		System.out.println("entrée pour continuer");
+		System.out.println("Touche entrée pour continuer");
 		scanner.nextLine();
 	}
 
@@ -186,9 +212,9 @@ public class LibraryService {
 		System.out.println("1. Liste de livres");
 		System.out.println("2. Ajouter un livre");
 		System.out.println("3. Emprunter un livre");
-		System.out.println("");
+		System.out.println("4. Supprimer un livre");
 		System.out.println("'quit' pour quitter");
-		System.out.println("Faites un choix");
+		System.out.println("Faire un choix");
 
 	}
 
