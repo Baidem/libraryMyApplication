@@ -26,6 +26,10 @@ public class Book {
 		this.loans = new LinkedList<Loan>();
 	}
 
+	public void addLoan(Loan loan) {
+		this.loans.add(loan);
+		this.loaned = true;
+	}
 
 
 	public String getTitle() {

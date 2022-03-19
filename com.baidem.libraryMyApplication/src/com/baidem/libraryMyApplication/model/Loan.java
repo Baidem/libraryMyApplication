@@ -5,16 +5,16 @@ import java.util.Objects;
 
 public class Loan {
 
+	private String loaner;
 	private LocalDate loanStart;
 	private LocalDate loanEnd;
-	private String loaner;
 	
 	
-	public Loan(LocalDate loanStart, LocalDate loanEnd, String loaner) {
+	public Loan(String loaner) {
 		super();
-		this.loanStart = loanStart;
-		this.loanEnd = loanEnd;
 		this.loaner = loaner;
+		this.loanStart = LocalDate.now();
+		this.loanEnd = null;
 	}
 
 
