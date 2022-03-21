@@ -7,10 +7,13 @@ import java.util.Scanner;
 
 import com.baidem.libraryMyApplication.model.Book;
 import com.baidem.libraryMyApplication.model.Loan;
+import com.baidem.libraryMyApplication.model.LoanPerDate;
 
 public class LibraryService {
 
 	private List<Book> books;
+	private List<LoanPerDate> loansPerDate;
+
 	Scanner scanner;
 
 	public LibraryService() {
@@ -18,12 +21,13 @@ public class LibraryService {
 		this.books = new LinkedList<Book>();
 		this.scanner = new Scanner(System.in);
 
-		Book livre1 = new Book("Titre", "Auteur", "description", LocalDate.of(2000, 1, 1), false);
-		Book livre2 = new Book("La vie de Toto", "Mon Oncle", "Les meilleurs blagues de Toto", LocalDate.of(2000, 1, 1),
-				false);
+		Book livre1 = new Book("Titre", "Auteur", "Description", LocalDate.of(2000, 1, 1), false);
+		Book livre2 = new Book("La vie de Titi", "Mon Oncle", "La vie folle de Titi", LocalDate.of(2022, 1, 5), false);
+		Book livre3 = new Book("La vie de Sylvestre", "Mon Oncle", "La vie folle de Sylvestre", LocalDate.of(2022, 2, 10), false);
 
 		books.add(livre1);
 		books.add(livre2);
+		books.add(livre3);
 
 	}
 
@@ -50,12 +54,50 @@ public class LibraryService {
 				removeBook();
 			} else if (answer.equals("5")) {
 				returnBook();
+			} else if (answer.equals("6")) {
+				searchLoansPerDates();
 			}
 
 		} while (!answer.equals("quit"));
 
 		scanner.close();
 
+	}
+	
+	public void searchLoansPerDates() {
+		
+		System.out.println("Recherche emprunts par dates");
+		System.out.println("----------------------------");
+		
+		for (Book book : books) {
+			for (Loan loan : book.getLoans()) {
+				if (book.getLoans().size() > 0) {
+					LoanPerDate addLoansPerDate = new LoanPerDate(loan.getLoanStart(), loan.getLoanEnd(), book.getTitle(), loan.getLoaner());
+					System.out.println(addLoansPerDate.toString());
+					loansPerDate.add(addLoansPerDate);
+					
+				}
+				
+
+//				if (!addLoansPerDate.equals(null)) {
+//					loansPerDates.add(addLoansPerDate);
+//				}	
+			} 
+			//System.out.println(loansPerDates);
+
+//		System.out.println("Saisir la date de début : AAAA-MM-JJ");
+//		LocalDate SearchDateStart = LocalDate.parse(scanner.nextLine());
+//		System.out.println("Saisir la date de fin : AAAA-MM-JJ");
+//		LocalDate SearchDateEnd = LocalDate.parse(scanner.nextLine());
+
+//		for (LoanPerDate loanPerDate : loansPerDates) {
+//			
+//		}
+			
+			
+			}
+		
+		enterToContinu();
 	}
 
 	public void returnBook() {
@@ -173,6 +215,7 @@ public class LibraryService {
 		String name = scanner.nextLine();
 		Loan loan = new Loan(name);
 		this.books.get(index).addLoan(loan);
+		System.out.println(this.books.get(index).toString());
 		System.out.println(name + " emprunte " + this.books.get(index).getTitle());
 	}
 
@@ -264,6 +307,8 @@ public class LibraryService {
 				System.out.println(count + " - " + book.getTitle());
 				count++;
 			}
+			
+			System.out.println(books);
 
 		} else {
 			System.out.println("La liste est vide.");
@@ -285,6 +330,7 @@ public class LibraryService {
 		System.out.println("3. Emprunter un livre");
 		System.out.println("4. Supprimer un livre");
 		System.out.println("5. Rendre un livre");
+		System.out.println("6. Recherche emprunts par dates");
 		System.out.println("'quit' pour quitter");
 		System.out.println("Faire un choix");
 
